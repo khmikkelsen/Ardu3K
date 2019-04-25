@@ -4,10 +4,13 @@ import gen.Ardu3kParser;
 import node.RootNode;
 import visitor.ASTVisitor;
 import visitor.BaseASTVisitor;
+import visitor.semantic.ExpressionTypeVisitor;
 
 public class FunctionNode extends RootNode {
+    private RootNode returnType;
     public FunctionNode(Ardu3kParser.FunctionContext ctx) {
         super(ctx);
+        setReturnType();
     }
 
     @Override
@@ -45,5 +48,14 @@ public class FunctionNode extends RootNode {
             children.add(node);
     }
 
+    public RootNode getReturnType() {
+        if (returnType == null) {
+            // Return void NODE? // TODO: Should we make a void node type?
+        } /*else*/ return returnType;
+    }
+    private void setReturnType(){
+        ExpressionTypeVisitor exprVisit = new ExpressionTypeVisitor();
+        returnType = exprVisit.visit(this);
+    }
 
 }
