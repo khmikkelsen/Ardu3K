@@ -8,6 +8,6 @@ loop = {
 
     b = 1 + 5 * 5+5  * 1;
 
-
+    if a || b <= c && d do something();
     arr = [];
 }

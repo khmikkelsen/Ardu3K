@@ -2,21 +2,17 @@ package node.scope;
 
 import gen.Ardu3kParser;
 import node.RootNode;
-import visitor.ASTVisitor;
-import visitor.BaseASTVisitor;
+import node.primary.VoidNode;
 import visitor.semantic.ExpressionTypeVisitor;
 
 public class FunctionNode extends RootNode {
     private RootNode returnType;
     public FunctionNode(Ardu3kParser.FunctionContext ctx) {
         super(ctx);
-        setReturnType();
     }
 
     @Override
-    public String toString() {
-        return "Function ";
-    }
+    public String toString() { return "Function "; }
 
     public RootNode getId() {
         return children.get(0);
@@ -49,13 +45,16 @@ public class FunctionNode extends RootNode {
     }
 
     public RootNode getReturnType() {
-        if (returnType == null) {
-            // Return void NODE? // TODO: Should we make a void node type?
-        } /*else*/ return returnType;
+        if (returnType == null) { // If not already set
+            setReturnType();
+            if (returnType != null) {
+                return returnType;
+
+            } else return new VoidNode();
+        } else return returnType;
     }
     private void setReturnType(){
         ExpressionTypeVisitor exprVisit = new ExpressionTypeVisitor();
         returnType = exprVisit.visit(this);
     }
-
 }
